@@ -1,0 +1,32 @@
+program encryption;
+
+{$APPTYPE CONSOLE}
+
+{$R *.res}
+
+uses
+  System.SysUtils,
+  UEncrypt in 'UEncrypt.pas';
+
+var
+  plain, cipher: textfile;
+  shift: integer;
+  contents: string;
+
+function readfile(filename: string):string;
+var
+  myfile: textfile;
+
+begin
+  assignfile(myfile, filename);
+  if FileExists(filename) then
+    Append(myfile)
+  else
+    Rewrite(myfile);
+  readln(contents);
+  result := contents;
+end;
+
+begin
+  writeln(readfile('myfile.txt'));
+end.
