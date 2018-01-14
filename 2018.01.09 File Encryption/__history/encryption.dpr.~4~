@@ -8,13 +8,10 @@ uses
   System.SysUtils,
   UEncrypt in 'UEncrypt.pas';
 
-const
-  plainfile = 'plain.txt';
-  encryptedfile = 'encrypt.txt';
-
 var
   shift: integer;
-  response, plaintext, ciphertext: string;
+  response, plainfile, encryptedfile, plaintext, ciphertext: string;
+
 
 function readfile(filename: string):string;
 var
@@ -34,7 +31,8 @@ begin
 end;
 
 begin
-
+  plainfile := 'plain.txt';
+  encryptedfile := 'encrypt.txt';
 
   write('encryption or decryption~: ');
   readln(response);
@@ -42,18 +40,13 @@ begin
   write('shift~: ');
   readln(shift);
 
-  case response[1] of
-  'e':
+  if response[1] = 'e' then begin
     plaintext := readfile(plainfile);
-    encryptC(plaintext, shift, ciphertext)\;
-  'd':
-    ciphertext := readfile(encryptedfile);
-    decryptC(ciphertext, shift, plaintext);
+    encryptC(plaintext, shift, ciphertext);
+
+  end else begin
+
   end;
-
-  write('Plaintext: ', #13#10, plaintext);
-  write('Ciphertext: ', #13#10, ciphertext);
-
 
 readln;
 end.
