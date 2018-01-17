@@ -1,59 +1,129 @@
-program encryption;
+program encryptionV2;
 
 {$APPTYPE CONSOLE}
-
 {$R *.res}
 
 uses
   System.SysUtils,
   UEncrypt in 'UEncrypt.pas';
 
-const
+type
+  TArrayOfString = array of string;
+
+  const
   plainfile = 'plain.txt';
-  encryptedfile = 'encrypt.txt';
+  encryptedfile = 'cipher.txt';
 
 var
-  shift: integer;
-  response, plaintext, ciphertext: string;
+  shift, len, i: integer;
+  response, filename, contents: string;
+  plaintext, ciphertext: TArrayOfString;
 
-function readfile(filename: string):string;
+function getfilelength(filename: string):integer;
+var
+  myfile: textfile;
+  count: integer;
+
+begin
+
+  assignfile(myfile, filename);
+  reset(myfile);
+
+  while not eof(myfile) do
+  begin
+    readln(myfile, count);
+    count := count + 1;
+  end;
+  result := count;
+end;
+
+function readfile(filename: string): TArrayOfString;
 var
   myfile: textfile;
   line, contents: string;
+  count: integer;
+  i: Integer;
 
 begin
+  count := 0;
   assignfile(myfile, filename);
+  reset(myfile);
+  while not eof(myfile) do
+  begin
+    readln(myfile, line);
+    count := count + 1;
+  end;
+
+  setlength(result, count);
 
   reset(myfile);
-  while not eof(myfile) do begin
-    readln(myfile, line);
-    contents := contents + #13#10 + line;
+  for i := 0 to count-1 do begin
+    readln(myfile,line);
+    result[i] := line;
   end;
+
   closefile(myfile);
-  result := contents;
 end;
+
+
+procedure writefile(filename: string; data: string);
+var
+  myfile: textfile;
+begin
+  assignfile(myfile, filename);
+  rewrite(myfile);
+  write(myfile, data);
+  closefile(myfile);
+end;
+
+
 
 begin
 
-
-  write('encryption or decryption~: ');
+  write('~: ');
   readln(response);
 
-  write('shift~: ');
-  readln(shift);
-
   case response[1] of
-  'e':
-    plaintext := readfile(plainfile);
-    encryptC(plaintext, shift, ciphertext)\;
-  'd':
-    ciphertext := readfile(encryptedfile);
-    decryptC(ciphertext, shift, plaintext);
-  end;
+    'e':
+    begin
+      write('shift~: ');
+      readln(shift);
+      plaintext := readfile(plainfile);
+      setlength(ciphertext, length(plaintext));
+      for I := 0 to length(plaintext) do begin
+        encryptC(plaintext[i], shift, ciphertext[i]);
+        writefile(encryptedfile, ciphertext[i]);
+      end;
+      end;
+    'd':
+    begin
+      write('shift~: ');
+      readln(shift);
+      ciphertext := readfile(encryptedfile);
+      setlength(plaintext, length(ciphertext));
+      for I := 0 to length(ciphertext) do begin
+        decryptC(ciphertext[i], shift, plaintext[i]);
+        writefile(plainfile, plaintext[i]);
+      end;
+    end;
+    'w':
+    begin
+      write('What file: ');
+      readln(filename);
+      write('What conents: ');
+      readln(contents);
+      writefile(filename, contents);
+    end;
+    end;
 
-  write('Plaintext: ', #13#10, plaintext);
-  write('Ciphertext: ', #13#10, ciphertext);
+    writeln('PlainText:');
+    for I := 0 to length(plaintext)-1 do
+      writeln(plaintext[i]);
+
+    writeln('CipherText:');
+    for I := 0 to length(ciphertext)-1 do
+      writeln(ciphertext[i]);
+    readln;
 
 
-readln;
 end.
