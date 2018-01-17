@@ -1,47 +1,65 @@
 unit UEncrypt;
-{unit containing encryption routines}
+{ unit containing encryption routines }
+
 interface
+
 uses
   sysutils;
-procedure EncryptC(plain:string;shift:integer;var cipher:string);
-{performs Caesar shift of shift places on plain to generate cipher}
-procedure DecryptC(cipher:string;shift:integer;var plain:string);
-{performs Caesar shoft of -shift places on cipher to generate plain}
+
+type
+  TArrayOfString = Array of String;
+procedure EncryptC(plain: TArrayOfString; shift: integer;
+  var cipher: TArrayOfString);
+{ performs Caesar shift of shift places on plain to generate cipher }
+procedure DecryptC(cipher: TArrayOfString; shift: integer;
+  var plain: TArrayOfString);
+{ performs Caesar shoft of -shift places on cipher to generate plain }
 
 implementation
-procedure EncryptC(plain:string;shift:integer;var cipher:string);
-{performs Caesar shift of shift places on plain to generate cipher}
+
+procedure EncryptC(plain: TArrayOfString; shift: integer;
+  var cipher: TArrayOfString);
+{ performs Caesar shift of shift places on plain to generate cipher }
 var
-  i,s:integer;
+  i, s, x: integer;
 begin
-  cipher:=uppercase(plain);
-  for i:= 1 to length(plain) do
+  for x := 0 to length(plain) do
   begin
-    for s := 1 to shift do
+    cipher[x] := uppercase(plain[x]);
+    for i := 1 to length(plain[x]) do
     begin
-       if cipher[i]='Z' then
-         cipher[i]:='A'
-       else inc(cipher[i]);
+      for s := 1 to shift do
+      begin
+        if cipher[x][i] = 'Z' then
+          cipher[x][i] := 'A'
+        else
+          inc(cipher[x][i]);
+      end;
     end;
   end;
 end;
 
-procedure DecryptC(cipher:string;shift:integer;var plain:string);
-{performs Caesar shoft of -shift places on cipher to generate plain}
+procedure DecryptC(cipher: TArrayOfString; shift: integer;
+  var plain: TArrayOfString);
+{ performs Caesar shoft of -shift places on cipher to generate plain }
 var
-  i,s:integer;
+  i, s, x: integer;
 begin
-  plain:=uppercase(cipher);
-  for i:= 1 to length(plain) do
+  for x := 0 to length(cipher) - 1 do
   begin
-    for s := 1 to shift do
+    plain[x] := uppercase(cipher[x]);
+    for i := 1 to length(plain[x]) do
     begin
-       if plain[i]='A' then
-          plain[i]:='Z'
-       else dec(plain[i]);
+      for s := 1 to shift do
+      begin
+        if plain[x][i] = 'A' then
+          plain[x][i] := 'Z'
+        else
+          dec(plain[x][i]);
+      end;
     end;
   end;
+
 end;
+
 end.
-
-
