@@ -1,0 +1,66 @@
+unit UEncrypt;
+{ unit containing encryption routines }
+
+interface
+
+uses
+  System.sysutils;
+
+type
+  TArrayOfString = Array of String;
+procedure EncryptC(textfrom: TArrayOfString; shift: integer;
+  var textto: TArrayOfString; encrypt: boolean);
+{ performs Caesar shift of shift places on plain to generate cipher }
+
+implementation
+
+procedure EncryptC(textfrom: TArrayOfString; shift: integer;
+  var textto: TArrayOfString; encrypt: boolean);
+
+var
+  i, s, x: integer;
+begin
+  for x := 0 to length(textfrom) do
+  begin
+    textto[x] := uppercase(textfrom[x]);
+    for i := 1 to length(textfrom[x]) do
+    begin
+      for s := 1 to shift do
+      begin
+        if encrypt then
+        begin
+          if textto[x][i] = 'Z' then
+            textto[x][i] := 'A'
+          else
+            inc(textto[x][i]);
+        end
+        else
+        begin
+          if textto[x][i] = 'A' then
+            textto[x][i] := 'Z'
+          else
+            dec(textto[x][i]);
+        end;
+      end;
+    end;
+  end;
+end;
+
+procedure encryptP(textfrom: TArrayOfString; shift: integer;
+  var textto: TArrayOfString; encrypt: boolean);
+var
+  i, j, k: integer;
+  data: TArrayOfString;
+
+begin
+  for i := 0 to length(textfrom) - 1 do
+  begin
+    for j := 1 to length(textfrom[i]) do
+    begin
+
+    end;
+  end;
+
+end;
+
+end.

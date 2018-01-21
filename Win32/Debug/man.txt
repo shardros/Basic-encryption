@@ -1,0 +1,13 @@
+Hello and welcome to the man page for the encrypt program.
+
+To use it type <COMMAND>/<PARMENTERS>
+
+- encypt/<shift>/<mode>
+	Encrypts the file with a ceaser shift
+- decypt/<shift>/<mode>
+	Decrypts the file with a ceaser shift
+- writeline/<filename>/<line to write>
+- clear/<filename>
+- print/<filename>
+- man 
+

@@ -1,8 +1,13 @@
+// This is the set of functions that I made for the palindromes and anagrams assignment
+
 unit UMenu;
 
 interface
+
 uses
-  System.SysUtils, classes; // include classes
+  System.SysUtils, classes, // include classes
+  UEncrypt, UFileHandeler;
+
 type
   Array3 = array [0 .. 3] of string;
 
@@ -10,7 +15,7 @@ procedure Split(Delimiter: Char; Str: string; ListOfStrings: TStrings);
 
 procedure menu(var arr: Array3);
 
-
+procedure man();
 
 implementation
 
@@ -26,7 +31,7 @@ end;
 
 procedure menu(var arr: Array3); {
   This handles the user interaction. It alows the user to enter a command and
-  parameter seperated by a # it then returns this in the array it is passed }
+  parameter seperated by a ; it then returns this in the array it is passed }
 var
   OutputList: TStringList;
   // Required as Split uses lists not arrays because I wanted to play with lists
@@ -34,14 +39,30 @@ var
   i: integer;
 begin
   OutputList := TStringList.Create; // creates the list
-  while length(userin)<3 do begin
+  while length(userin) < 3 do
+  begin
     write('~: ');
     readln(userin);
   end;
-  Split('#', userin, OutputList); // split userin on | and return to OutputList
+  Split(';', userin, OutputList); // split userin on | and return to OutputList
   for i := 0 to OutputList.Count - 1 do // Copies list of array
     arr[i] := OutputList[i];
   OutputList.Free;
+end;
+
+procedure man();
+const
+manfile = 'man.txt';
+
+var
+  i: integer;
+  mancontents: UEncrypt.TArrayOfString;
+begin
+  mancontents := readfile(manfile);
+  for I := 0 to length(mancontents)-1 do
+    begin
+      writeln(mancontents[i]);
+    end;
 end;
 
 end.
