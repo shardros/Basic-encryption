@@ -10,6 +10,9 @@ function readfile(filename: string): UEncrypt.TArrayOfString;
 
 procedure writefile(filename: string; data: string);
 
+procedure appendfile(filename: string; data: string);
+
+procedure printfile(filename: string);
 
 implementation
 
@@ -67,5 +70,28 @@ begin
   write(myfile, data);
   closefile(myfile);
 end;
+
+procedure appendfile(filename: string; data: string);
+var
+  myfile: textfile;
+begin
+  assignfile(myfile, filename);
+  append(myfile);
+  writeln(myfile, data);
+  closefile(myfile);
+end;
+
+procedure printfile(filename: string);
+var
+  filecontents: TArrayOfString;
+  i: integer;
+begin
+  filecontents := readfile(filename);
+  for i := 0 to length(filecontents)-1 do
+  begin
+    writeln(filecontents[i])
+  end;
+end;
+
 
 end.

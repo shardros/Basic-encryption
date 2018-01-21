@@ -34,8 +34,10 @@ var
   i: integer;
 begin
   OutputList := TStringList.Create; // creates the list
-  write('~: ');
-  readln(userin);
+  while length(userin)<3 do begin
+    write('~: ');
+    readln(userin);
+  end;
   Split('#', userin, OutputList); // split userin on | and return to OutputList
   for i := 0 to OutputList.Count - 1 do // Copies list of array
     arr[i] := OutputList[i];

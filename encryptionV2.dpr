@@ -14,59 +14,55 @@ const
   encryptedfile = 'cipher.txt';
 
 var
-  shift, len, i: integer;
-  response, filename, contents: string;
+  i: integer;
   plaintext, ciphertext: UEncrypt.TArrayOfString;
   menuarr: UMenu.Array3;
 
 begin
-  menu(menuarr);
-
-  case menuarr[0][1] of
-    'e':
-      begin
-
-        write('shift~: ');
-        readln(shift);
-        plaintext := readfile(plainfile);
-        setlength(ciphertext, length(plaintext));
-        encryptC(plaintext, shift, ciphertext);
-
-        for i := 0 to length(plaintext) do
-        begin
-          writefile(encryptedfile, ciphertext[i]);
-        end;
-      end;
-    'd':
-      begin
-        write('shift~: ');
-        readln(shift);
-        ciphertext := readfile(encryptedfile);
-        setlength(plaintext, length(ciphertext));
-        decryptC(ciphertext, shift, plaintext);
-
-        for i := 0 to length(ciphertext) do
-        begin
-          writefile(plainfile, plaintext[i]);
-        end;
-      end;
-    'w':
-      begin
-        write('What file: ');
-        readln(filename);
-        write('What conents: ');
-        readln(contents);
-        writefile(filename, contents);
-      end;
-  end;
 
   writeln('PlainText:');
-  for i := 0 to length(plaintext) - 1 do
-    writeln(plaintext[i]);
+  printfile(plainfile);
 
   writeln('CipherText:');
-  for i := 0 to length(ciphertext) - 1 do
-    writeln(ciphertext[i]);
-  readln;
+  printfile(encryptedfile);
 
+  while True do begin
+
+    menu(menuarr);
+
+    case menuarr[0][1] of
+      'e':
+        begin
+          plaintext := readfile(plainfile);
+          setlength(ciphertext, length(plaintext));
+          encryptC(plaintext, strtoint(menuarr[1]), ciphertext);
+
+          for i := 0 to length(plaintext)-1 do
+          begin
+            appendfile(encryptedfile, ciphertext[i]);
+          end;
+        end;
+      'd':
+        begin
+          ciphertext := readfile(encryptedfile);
+          setlength(plaintext, length(ciphertext));
+          decryptC(ciphertext, strtoint(menuarr[1]), plaintext);
+
+          for i := 0 to length(ciphertext)-1 do
+          begin
+            appendfile(plainfile, plaintext[i]);
+          end;
+        end;
+      'w':
+          appendfile(menuarr[1], menuarr[2]);
+      'c':
+          writefile(menuarr[1], '');
+    end;
+
+    writeln('PlainText:');
+    printfile(plainfile);
+
+    writeln('CipherText:');
+    printfile(encryptedfile);
+  end;
 end.
